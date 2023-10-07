@@ -39,20 +39,23 @@ const users = {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-
-const findUserByName = (name) => { 
+// Extend the findUserByName function to also filter by job
+const findUserByNameAndJob = (name, job) => {
     return users['users_list']
-        .filter( (user) => user['name'] === name); 
+        .filter((user) => {
+            return (!name || user['name'] === name) && (!job || user['job'] === job);
+        });
 }
-//using query param here
+
+// Update the '/users' route to accept name and job query parameters
 app.get('/users', (req, res) => {
     const name = req.query.name;
-    if (name != undefined){
-        let result = findUserByName(name);
-        result = {users_list: result};
-        res.send(result);
-    }
-    else{
+    const job = req.query.job;
+
+    if (name || job) {
+        const result = findUserByNameAndJob(name, job);
+        res.send({ users_list: result });
+    } else {
         res.send(users);
     }
 });
