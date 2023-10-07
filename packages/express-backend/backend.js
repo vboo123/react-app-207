@@ -83,6 +83,20 @@ app.post('/users', (req, res) => {
     res.send();
 });
 
+app.delete('/users/:id', (req, res) => {
+    const id = req.params['id'];
+    let result = findUserById(id);
+    if (result === undefined) {
+        res.status(404).send('Resource not found.');
+    } else {
+        //delete this user defined by id from users 
+        for (let i in users["users_list"])
+        if (users["users_list"][i]['id'] == id) delete users["users_list"].splice([i],1
+            );
+            res.send()
+    }});
+
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });      
