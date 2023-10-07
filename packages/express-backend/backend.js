@@ -44,7 +44,7 @@ const findUserByName = (name) => {
     return users['users_list']
         .filter( (user) => user['name'] === name); 
 }
-
+//using query param here
 app.get('/users', (req, res) => {
     const name = req.query.name;
     if (name != undefined){
@@ -54,6 +54,21 @@ app.get('/users', (req, res) => {
     }
     else{
         res.send(users);
+    }
+});
+
+const findUserById = (id) =>
+    users['users_list']
+        .find( (user) => user['id'] === id);
+    
+//using a path variable here
+app.get('/users/:id', (req, res) => {
+    const id = req.params['id']; //or req.params.id
+    let result = findUserById(id);
+    if (result === undefined) {
+        res.status(404).send('Resource not found.');
+    } else {
+        res.send(result);
     }
 });
 
