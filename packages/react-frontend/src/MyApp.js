@@ -22,8 +22,11 @@ function MyApp() {
     postUser(person)
       .then((response) => {
         if (response.status === 201) {
-          // If the response status is 201, add the person to the characters state.
-          setCharacters([...characters, person]);
+          // If the response status is 201, parse the response JSON to get the updated user with the ID.
+          response.json().then((newUser) => {
+            setCharacters([...characters, newUser]);
+            console.log(newUser);
+          });
         } else {
           // Handle other status codes if needed.
           console.log("Failed to add user. Status code: " + response.status);
@@ -33,6 +36,7 @@ function MyApp() {
         console.log("Error:", error);
       });
   }
+  
   
 
   function fetchUsers() {
