@@ -18,13 +18,22 @@ function MyApp() {
     return promise;
   }
 
-  function updateList(person) { 
+  function updateList(person) {
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
-      .catch((error) => {
-        console.log(error);
+      .then((response) => {
+        if (response.status === 201) {
+          // If the response status is 201, add the person to the characters state.
+          setCharacters([...characters, person]);
+        } else {
+          // Handle other status codes if needed.
+          console.log("Failed to add user. Status code: " + response.status);
+        }
       })
-}
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  }
+  
 
   function fetchUsers() {
     const promise = fetch("http://localhost:8000/users");
