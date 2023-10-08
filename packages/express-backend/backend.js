@@ -78,7 +78,10 @@ app.get('/users/:id', (req, res) => {
 });
 
 const addUser = (user) => {
+    const randomId = Math.random().toString(36).substring(7); // Generate a 7-character random ID
+    user.id = randomId;
     users['users_list'].push(user);
+    console.log(user)
     return user;
 }
 
