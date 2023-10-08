@@ -4,8 +4,27 @@ import Table from "./Table";
 import Form from "./Form";
 
 //useEffect hook is a way to run code on every render
-
+//The useEffect hook is a fundamental part of React, a popular JavaScript library for building user interfaces. Its primary purpose is to allow you to perform side effects in functional components. Side effects are actions that happen outside the normal flow of your application, such as data fetching, DOM manipulation, and setting up event listeners
 function MyApp() {
+  function postUser(person) {
+    const promise = fetch("Http://localhost:8000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(person),
+    });
+
+    return promise;
+  }
+
+  function updateList(person) { 
+    postUser(person)
+      .then(() => setCharacters([...characters, person]))
+      .catch((error) => {
+        console.log(error);
+      })
+}
 
   function fetchUsers() {
     const promise = fetch("http://localhost:8000/users");
@@ -30,10 +49,6 @@ useEffect(() => {
       return i !== index;
     });
     setCharacters(updated);
-  }
-
-  function updateList(person) {
-    setCharacters([...characters, person]);
   }
 
   return (
